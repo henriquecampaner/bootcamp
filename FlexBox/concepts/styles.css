@@ -1,0 +1,61 @@
+html,
+body,
+#app {
+    height: 100%;
+    margin: 0;
+}
+
+#app {
+    display: flex;
+    /* init flex */
+
+    flex-direction: row;
+    /* direction of the itens */
+    /* flex direction change the line */
+
+    /* align-items: center; */
+    /* vertical align */
+
+    /* justify-content: space-evenly; */
+    /* horizontal align */
+    /* space-between = espaco igual entre os itens/ 0 margens */
+    /* space-around = espaco igual entre os itens/ com margens */
+    /* space-evenly = espaco igual itens e margens */
+
+    /* flex-wrap: wrap; */
+    /* quebra linha caso nao caiba */
+
+    /* align-content: space-around; */
+    /* alinha items quando estaos em linhas quebradas */
+
+    
+}
+
+.box {
+    width: 500px;
+    height: 60px;
+    background: #f00;
+    margin: 5px;
+
+    /* flex-grow: 1; */
+    /* 1 = objeto aceita ser aumentado no elemento pai 0 = o contrario */
+    /* flex-shrink: 0; */
+    /* 1 = esprime , 0 = nao esprime */
+    /* flex: 1 */
+    /* a soma do grow e do shrink 1=grow 2=shrink */
+}
+
+.red {
+    order: 3;
+    /* order: ordena os itens do container de acordo com a numeracao passada */
+}
+
+.green {
+    background: #0f0;
+    order: 2;
+}
+
+.blue {
+    background: #00f;
+    order: 0;
+}
