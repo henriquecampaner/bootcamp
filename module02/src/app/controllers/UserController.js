@@ -57,6 +57,7 @@ class UserController {
     const { email, oldPassword } = req.body;
 
     const user = await User.findByPk(req.userId);
+    // busca o userId que esta na requisicao, que foi incluido no login
 
     if (email !== user.email) {
       const userExists = await User.findOne({ where: { email } });
