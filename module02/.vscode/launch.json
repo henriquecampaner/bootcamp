@@ -9,7 +9,6 @@
       "request": "attach",
       "name": "Launch Program",
       "restart": true,
-      "protocol": "inspector"
     }
   ]
 }
