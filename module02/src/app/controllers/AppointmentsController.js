@@ -17,7 +17,7 @@ class AppointmentsController {
       // onde esta o usuario
       order: ['date'],
       // ordena por data
-      attributes: ['id', 'date'],
+      attributes: ['id', 'date', 'past', 'cancelable'],
       // seleciona quais campos aparecerao
       limit: 20,
       // limite da lsitagem
