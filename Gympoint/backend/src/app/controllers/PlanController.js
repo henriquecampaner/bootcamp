@@ -10,7 +10,9 @@ class PlanController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'There are details missing or wrong' });
+      return res
+        .status(400)
+        .json({ error: 'There are details missing or wrong' });
     }
 
     const planExists = await Plan.findOne({
@@ -21,7 +23,7 @@ class PlanController {
       return res.status(400).json({ error: 'Plan alredy exists' });
     }
 
-    const {id, title, duration, price } = await Plan.create(req.body);
+    const { id, title, duration, price } = await Plan.create(req.body);
 
     return res.json({ id, title, duration, price });
   }
@@ -34,7 +36,9 @@ class PlanController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'There are details missing or wrong' });
+      return res
+        .status(400)
+        .json({ error: 'There are details missing or wrong' });
     }
 
     const plan = await Plan.findByPk(req.params.planId);
@@ -45,10 +49,9 @@ class PlanController {
       return res.status(400).json({ error: 'Plan alredy exists' });
     }
 
-    const {title, duration, price} = await plan.update(req.body)
+    const { title, duration, price } = await plan.update(req.body);
 
-    return res.send({title, duration, price})
-
+    return res.send({ title, duration, price });
   }
 
   async delete(req, res) {

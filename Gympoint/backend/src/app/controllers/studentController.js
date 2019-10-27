@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import Student from '../models/Student';
 import { isAfter, parseISO } from 'date-fns';
+import Student from '../models/Student';
 
 class StudentController {
   async index(req, res) {
@@ -57,32 +57,39 @@ class StudentController {
   async update(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string(),
-      email: Yup.string().email(),
-      birthday: Yup.date(),
+      email: Yup.string(),
+      birth: Yup.date(),
       weight: Yup.number(),
       height: Yup.number(),
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
+      return res.status(400).json({ error: 'Validation failed' });
     }
 
-    // const studentExists = await Student.findOne({
-    //   where: { email: req.body.email },
-    // });
+    const { id } = req.params;
+    const { name, email, birthday, weight, height } = req.body;
 
-    // if (studentExists) {
-    //   return res.status(400).json({ error: 'Student already exists.' });
+    if (isAfter(parseISO(birthday), new Date())) {
+      return res
+        .status(400)
+        .json({ error: 'Birth date can not be after current date' });
+    }
+
+    const student = await Student.findByPk(id);
+
+    // if (student.email !== email) {
+    //   const studentExists = await Student.findOne({ where: { email } });
+
+    //   if (studentExists) {
+    //     return res.status(401).json({ error: 'Email is already in use' });
+    //   }
     // }
 
-    try {
-      const student = await Student.findByPk(req.params.id);
-      const { name, email, birthday, weight, height } = student.update(req.body);
+    await student.update({ name, email, birthday, weight, height });
+    await student.save();
 
-      return res.status(200).json(student);
-    } catch (err) {
-      return res.status(400).json({ error: 'Update failed.' });
-    }
+    return res.json(student);
   }
 
   async delete(req, res) {

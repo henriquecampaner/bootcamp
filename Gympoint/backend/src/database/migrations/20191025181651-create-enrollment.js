@@ -35,15 +35,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      price_plan: {
-        type: Sequelize.INTEGER,
+      price: {
+        type: Sequelize.DECIMAL,
         allowNull: false,
-        references: {
-          model: 'plans',
-          key: 'price',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        default: 0,
       },
       created_at: {
         type: Sequelize.DATE,
