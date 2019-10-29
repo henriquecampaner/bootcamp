@@ -1,0 +1,40 @@
+.comments {
+  margin: 10px;
+}
+
+.comments-header {
+  display: flex;
+}
+
+.comments-header-img img {
+  height: 28px;
+  border-radius: 28px;
+}
+
+.comments-header-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.comments-header-details h4 {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.comments-header-details p {
+  font-size: 11px;
+  line-height: 13px;
+  color: rgb(124, 124, 124);
+  margin-top: 2px;
+}
+
+.comments-details {
+  background: rgb(197, 195, 195);
+  border-radius: 20px;
+  padding: 2px 30px;
+  text-align: justify;
+  margin-bottom: 30px;
+}
