@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import TechItem from './TechItem';
+
 class Techlist extends Component {
   state ={
     newTech: '',
@@ -9,6 +11,19 @@ class Techlist extends Component {
       'React Native'
     ]
   };
+
+  componentDidMount(){
+
+  };
+  // essa funcao é executada assim que o componente aparece em tela
+
+  componentDidUpdate(prevProps, prevState){
+    // recebe o antigo props e state como parametro
+
+  };
+// executado quando houver alteracaoes nas props ou estados
+
+
 
   handleInputChange = e => {
     this.setState({newTech: e.target.value})
@@ -27,7 +42,7 @@ class Techlist extends Component {
     //todo estado e imutavel //setState cria um novo estado com as alteracoes passadas
   }
 
-  hndleDelete = (tech) =>{
+  handleDelete = (tech) =>{
     this.setState({techs: this.state.techs.filter(t => t !== tech)})
     // usa-se o filter para retornar apenas as techs que sejam diferente da tech atual
   }
@@ -36,13 +51,15 @@ class Techlist extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <ul>
-        {this.state.techs.map(tech =>(
-          <li key={tech}>
-            {tech}
-            <button onClick={() => this.hndleDelete(tech)} type="button">Remove</button>
-            {/* cria-se uma nova funcao, assim so sera executada quando o user clicar (no caso de func com arg) */}
-          </li>
-        ))}
+          {this.state.techs.map(tech =>(
+            <TechItem
+              key={tech}
+              tech={tech}
+              onDelete={() => this.handleDelete(tech)}
+              // as funcoes para manipular o estado, precisam ficar no mesmo componente do estado
+              // passasse a funcao como um propriedade ao componente
+            />
+          ))}
         </ul>
         <input
           type="text"
