@@ -16,8 +16,6 @@ export default class Main extends Component {
     notFound: false,
   };
 
-  
-
   componentDidMount() {
     const repositories = localStorage.getItem('repositories');
 
@@ -44,36 +42,32 @@ export default class Main extends Component {
 
     this.setState({ loading: true, notFound: false });
 
-    
     try {
-      const { newRepo, repositories} = this.state;
+      const { newRepo, repositories } = this.state;
 
       const response = await api.get(`/repos/${newRepo}`);
       // response e a variavel com a url para requisicao
 
-    if(newRepo === '') throw alert('You need to add a repository')
+      if (newRepo === '')
+        throw new Error(alert('You need to add a repository'));
 
-    const hasRepo = repositories.find(r => r.name === newRepo);
+      const hasRepo = repositories.find(r => r.name === newRepo);
 
-    if (hasRepo) throw alert('You already have this repository');
+      if (hasRepo) throw alert('You already have this repository');
 
-    const data = {
-      name: response.data.full_name,
-    };
+      const data = {
+        name: response.data.full_name,
+      };
 
-    this.setState({
-      repositories: [...repositories, data],
-      newRepo: '',
-    });
-    
+      this.setState({
+        repositories: [...repositories, data],
+        newRepo: '',
+      });
     } catch (error) {
-      
-      this.setState({notFound: true})
-      
+      this.setState({ notFound: true });
     } finally {
       this.setState({ loading: false });
     }
-
   };
 
   render() {

@@ -1,6 +1,7 @@
-/* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
-import { Keyboard } from 'react-native';
+import PropTypes from 'prop-types';
+import { Keyboard, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '../../services/api';
 
@@ -19,13 +20,51 @@ import {
 } from './styles';
 
 export default class Main extends Component {
+  // define o titulo dessa rota
+
+  static propTypes = {
+    navigation: PropTypes.shape({
+      navigate: PropTypes.func,
+    }).isRequired,
+  };
+
   state = {
     newUser: '',
     users: [],
+    loading: false,
+  };
+
+  async componentDidMount() {
+    const users = await AsyncStorage.getItem('users');
+
+    if (users) {
+      this.setState({ users: JSON.parse(users) });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    const { users } = this.state;
+
+    if (prevState.users === users) {
+      AsyncStorage.setItem('users', JSON.stringify(users));
+      // salva no banco do celular os users
+    }
+  }
+
+  handleNavigate = user => {
+    const { navigation } = this.props;
+    // propriedade usada para navegacao
+
+    navigation.navigate('User', { user });
+    // 1- pagina para ir
+    // 2- parametros a serem utilizados (no caso props para a pagina)
   };
 
   handleAddUser = async () => {
     const { users, newUser } = this.state;
+
+    this.setState({ loading: true });
+    // seto o loading para true enquanto faz a chamada api
 
     const respose = await api.get(`/users/${newUser}`);
 
@@ -37,16 +76,22 @@ export default class Main extends Component {
     };
 
     this.setState({
-      user: [...users, data],
+      users: [...users, data],
       newUser: '',
+      loading: false,
+      // seto para false quando terminar a chamda
     });
 
     Keyboard.dismiss();
     // faz o teclado sumir
   };
 
+  static navigationOptions = {
+    title: 'Users',
+  };
+
   render() {
-    const { users, newUser } = this.state;
+    const { users, newUser, loading } = this.state;
 
     return (
       <Container>
@@ -63,9 +108,14 @@ export default class Main extends Component {
             onSubmitEditing={this.handleAddUser}
             // as duas configs acima configura o botao do celular para enviar
           />
-          <SubmitButton onPress={this.handleAddUser}>
+          <SubmitButton loading={loading} onPress={this.handleAddUser}>
             {/* onPress ao inves de onClick */}
-            <Icon name="add" size={20} color="#fff" />
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Icon name="add" size={20} color="#fff" />
+            )}
+            {/* ActivityIndicador e um button de carregamento */}
           </SubmitButton>
         </Form>
 
@@ -78,7 +128,7 @@ export default class Main extends Component {
               <Name>{item.name}</Name>
               <Bio>{item.bio}</Bio>
 
-              <ProfileButton onPress={() => {}}>
+              <ProfileButton onPress={() => this.handleNavigate(item)}>
                 <ProfileButtonText>Go to profile</ProfileButtonText>
               </ProfileButton>
             </User>
@@ -88,8 +138,3 @@ export default class Main extends Component {
     );
   }
 }
-
-Main.navigationOptions = {
-  title: 'Users',
-};
-// define o titulo dessa rota
