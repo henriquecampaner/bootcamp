@@ -1,106 +1,78 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// conecta o component com o redux
 import { MdShoppingCart } from 'react-icons/md';
+import api from '../../services/api';
+import { formatPrice } from '../../util/format';
 
+import * as CartActions from '../../store/modules/cart/action';
+// importa as actions
 import { ProductList } from './styles';
 
-export default function Home() {
-  return (
-    <ProductList>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-de-caminhada-leve-confortavel/06/E74-0492-006/E74-0492-006_detalhe2.jpg?ims=326x"
-          alt="tenis"
-        />
-        <strong>Nice shoes</strong>
-        <span>£104.20</span>
+class Home extends Component {
+  state = {
+    products: [],
+  };
 
-        <button type="button">
-          <div>
-            <MdShoppingCart size={16} color="#fff" /> 3
-          </div>
-          <span>Add to cart</span>
-        </button>
-      </li>
+  async componentDidMount() {
+    const response = await api.get('products');
 
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-de-caminhada-leve-confortavel/06/E74-0492-006/E74-0492-006_detalhe2.jpg?ims=326x"
-          alt="tenis"
-        />
-        <strong>Nice shoes</strong>
-        <span>£104.20</span>
+    const data = response.data.map(product => ({
+      ...product,
+      priceFormatted: formatPrice(product.price),
+    }));
 
-        <button type="button">
-          <div>
-            <MdShoppingCart size={16} color="#fff" /> 3
-          </div>
-          <span>Add to cart</span>
-        </button>
-      </li>
+    this.setState({ products: data });
+  }
 
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-de-caminhada-leve-confortavel/06/E74-0492-006/E74-0492-006_detalhe2.jpg?ims=326x"
-          alt="tenis"
-        />
-        <strong>Nice shoes</strong>
-        <span>£104.20</span>
+  handleAddProduct = id => {
+    const { addToCartRequest } = this.props;
+    // dispatch e a funcao que dispara o reducer
+    addToCartRequest(id);
+  };
 
-        <button type="button">
-          <div>
-            <MdShoppingCart size={16} color="#fff" /> 3
-          </div>
-          <span>Add to cart</span>
-        </button>
-      </li>
+  render() {
+    const { products } = this.state;
+    const { amount } = this.props;
+    return (
+      <ProductList>
+        {products.map(product => (
+          <li key={product.id}>
+            <img src={product.image} alt={product.title} />
+            <strong>{product.title}</strong>
+            <span>{product.priceFormatted}</span>
 
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-de-caminhada-leve-confortavel/06/E74-0492-006/E74-0492-006_detalhe2.jpg?ims=326x"
-          alt="tenis"
-        />
-        <strong>Nice shoes</strong>
-        <span>£104.20</span>
-
-        <button type="button">
-          <div>
-            <MdShoppingCart size={16} color="#fff" /> 3
-          </div>
-          <span>Add to cart</span>
-        </button>
-      </li>
-
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-de-caminhada-leve-confortavel/06/E74-0492-006/E74-0492-006_detalhe2.jpg?ims=326x"
-          alt="tenis"
-        />
-        <strong>Nice shoes</strong>
-        <span>£104.20</span>
-
-        <button type="button">
-          <div>
-            <MdShoppingCart size={16} color="#fff" /> 3
-          </div>
-          <span>Add to cart</span>
-        </button>
-      </li>
-
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-de-caminhada-leve-confortavel/06/E74-0492-006/E74-0492-006_detalhe2.jpg?ims=326x"
-          alt="tenis"
-        />
-        <strong>Nice shoes</strong>
-        <span>£104.20</span>
-
-        <button type="button">
-          <div>
-            <MdShoppingCart size={16} color="#fff" /> 3
-          </div>
-          <span>Add to cart</span>
-        </button>
-      </li>
-    </ProductList>
-  );
+            <button
+              type="button"
+              onClick={() => this.handleAddProduct(product.id)}
+            >
+              <div>
+                <MdShoppingCart size={16} color="#fff" />{' '}
+                {amount[product.id] || 0}
+              </div>
+              <span>Add to cart</span>
+            </button>
+          </li>
+        ))}
+      </ProductList>
+    );
+  }
 }
+
+const mapStateToProps = state => ({
+  amount: state.cart.reduce((amount, product) => {
+    amount[product.id] = product.amount;
+    return amount;
+  }, {}),
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(CartActions, dispatch);
+// converte actions em propriedades
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);
+// exportar dessa maneira o component
