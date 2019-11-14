@@ -1,8 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
-// import { Container } from './styles';
+import { Container } from './styles';
 
 export default function Cart() {
-  return <View />;
+  return (
+    <Container>
+      <Text>oi</Text>
+    </Container>
+  );
 }

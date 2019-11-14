@@ -1,14 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
-
-// import logo from '../../assets/logo@3x';
-
-// import { Container } from './styles';
+import { Text, Button, Alert } from 'react-native';
+import { Container } from './styles';
 
 export default function Home() {
-  return <View />;
-}
+  return (
+    <Container>
+      <Text>Oi</Text>
 
-Home.navigationOptions = {
-  title: 'Home',
-};
+      <Button
+        title="asddasdas"
+        onPress={() => Alert.alert('Simple Button pressed')}
+      />
+    </Container>
+  );
+}

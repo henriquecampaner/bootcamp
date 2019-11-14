@@ -15,9 +15,10 @@ const Routes = createAppContainer(
       Cart,
     },
     {
-      defaultNavigationOptions: {
-        header: <Header />,
-      },
+      headerBackTitleVisible: false,
+      defaultNavigationOptions: navigation => ({
+        header: <Header {...navigation} />,
+      }),
     }
   )
 );
