@@ -1,9 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
 import './config/ReactotronConfig';
+import { Provider } from 'react-redux';
+// goes around my routes
+
+import store from './store';
 
 import Routes from './routes';
 
 export default function App() {
-  return <Routes />;
+  return (
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  );
 }
