@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { connect } from 'react-redux';
 
 import {
   Container,
@@ -21,29 +22,12 @@ import {
   TotalAmount,
 } from './styles';
 
-export default function Cart() {
-  const DATA = [
-    {
-      id: 1,
-      image:
-        'https://static.netshoes.com.br/produtos/tenis-sneaker-esportivo-running-leve-calce-facil-unissex-vr/06/E74-0492-006/E74-0492-006_detalhe2.jpg?ims=326x',
-      title: 'First Item ewpopoewroprwe',
-      price: 123,
-    },
-    {
-      id: 2,
-      image:
-        'https://static.netshoes.com.br/produtos/tenis-sneaker-esportivo-running-leve-calce-facil-unissex-vr/06/E74-0492-006/E74-0492-006_detalhe2.jpg?ims=326x',
-      title: 'Second Item',
-      price: 123,
-    },
-  ];
-
+function Cart({ cart }) {
   return (
     <Container>
       <RenderProduct>
         <FlatList
-          data={DATA}
+          data={cart}
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
             <ProductContainer>
@@ -51,7 +35,7 @@ export default function Cart() {
                 <ProductImage source={{ uri: item.image }} />
                 <ProductDetail>
                   <ProductTitle>{item.title}</ProductTitle>
-                  <ProductPrice>{item.price}</ProductPrice>
+                  <ProductPrice>{item.priceFormatted}</ProductPrice>
                 </ProductDetail>
                 <Icon name="delete-forever" size={24} color="#222" />
               </Product>
@@ -61,7 +45,7 @@ export default function Cart() {
                   <Icon name="remove-circle-outline" size={20} color="#222" />
                 </TouchableOpacity>
 
-                <ProductAmount value="2" />
+                <ProductAmount value={String(item.amount)} />
 
                 <TouchableOpacity>
                   <Icon name="add-circle-outline" size={20} color="#222" />
@@ -85,3 +69,9 @@ export default function Cart() {
     </Container>
   );
 }
+
+const mapStateToProps = state => ({
+  cart: state.cart,
+});
+
+export default connect(mapStateToProps)(Cart);

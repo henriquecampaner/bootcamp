@@ -1,11 +1,13 @@
 import Reactotron from 'reactotron-react-native';
 
-if (__DEV__) {
+import { reactotronRedux } from 'reactotron-redux';
+
+if (process.env.NODE_ENV === 'development') {
   const tron = Reactotron.configure()
-    .useReactNative()
+    .use(reactotronRedux())
     .connect();
 
-  console.tron = tron;
-
   tron.clear();
+
+  console.tron = tron;
 }
