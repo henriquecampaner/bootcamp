@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Container,
   ProductContainer,
@@ -20,75 +19,61 @@ import { formatPrice } from '../../util/format';
 
 import * as CartActions from '../../store/modules/cart/actions';
 
-class Home extends Component {
-  state = {
-    products: [],
-  };
+export default function Home() {
+  const amount = useSelector(state =>
+    state.cart.reduce((sumAmount, product) => {
+      sumAmount[product.id] = product.amount;
+      return sumAmount;
+    }, {})
+  );
 
-  componentDidMount() {
-    this.getProducts();
+  const dispatch = useDispatch();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    async function getProducts() {
+      const response = await api.get('/products');
+
+      const data = response.data.map(product => ({
+        ...product,
+        priceFormatted: formatPrice(product.price),
+      }));
+
+      setProducts(data);
+    }
+    getProducts();
+  }, []);
+
+  function handleAddProduct(id) {
+    dispatch(CartActions.addToCartRequest(id));
   }
 
-  getProducts = async () => {
-    const response = await api.get('/products');
-
-    const data = response.data.map(product => ({
-      ...product,
-      priceFormatted: formatPrice(product.price),
-    }));
-
-    this.setState({ products: data });
-  };
-
-  handleAddProduct = id => {
-    const { addToCartRequest } = this.props;
-
-    addToCartRequest(id);
-  };
-
-  render() {
-    const { products } = this.state;
-    const { amount } = this.props;
-
-    return (
-      <Container>
-        <View>
-          <FlatList
-            horizontal
-            data={products}
-            keyExtractor={item => String(item.id)}
-            renderItem={({ item }) => (
-              <ProductContainer>
-                <ProductImage source={{ uri: item.image }} />
-                <ProductTitle>{item.title}</ProductTitle>
-                <ProductPrice>{formatPrice(item.price)}</ProductPrice>
-                <ProductButton
-                  title="Add Product"
-                  onPress={() => this.handleAddProduct(item.id)}
-                >
-                  <ProductBasket>
-                    <Icon name="add-shopping-cart" color="#fff" size={20} />
-                    <TextAmount>{amount[item.id] || 0}</TextAmount>
-                  </ProductBasket>
-                  <TextAdd>Add</TextAdd>
-                </ProductButton>
-              </ProductContainer>
-            )}
-          />
-        </View>
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <View>
+        <FlatList
+          horizontal
+          data={products}
+          keyExtractor={item => String(item.id)}
+          renderItem={({ item }) => (
+            <ProductContainer>
+              <ProductImage source={{ uri: item.image }} />
+              <ProductTitle>{item.title}</ProductTitle>
+              <ProductPrice>{formatPrice(item.price)}</ProductPrice>
+              <ProductButton
+                title="Add Product"
+                onPress={() => handleAddProduct(item.id)}
+              >
+                <ProductBasket>
+                  <Icon name="add-shopping-cart" color="#fff" size={20} />
+                  <TextAmount>{amount[item.id] || 0}</TextAmount>
+                </ProductBasket>
+                <TextAdd>Add</TextAdd>
+              </ProductButton>
+            </ProductContainer>
+          )}
+        />
+      </View>
+    </Container>
+  );
 }
-
-const mapStateToProps = state => ({
-  amount: state.cart.reduce((amount, product) => {
-    amount[product.id] = product.amount;
-    return amount;
-  }, {}),
-});
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(CartActions, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
