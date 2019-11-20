@@ -25,6 +25,9 @@ export function* signIn({ payload }) {
     }
     // se o usuario nao for um provider, ERRO
 
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    // coloca o token no header, para assim poder acessar as outras rotas
+
     yield put(signInSuccess(token, user));
     // dispatch a funcao com o token e o usuario que era solicitado la nas actions
 
@@ -55,7 +58,19 @@ export function* signUp({ payload }) {
   }
 }
 
+export function setToken({ payload }) {
+  // funcao para armazedar o token, msm se user fizer f5
+  if (!payload) return;
+
+  const { token } = payload.auth;
+
+  if (token) {
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+}
+
 export default all([
+  takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
 ]);
