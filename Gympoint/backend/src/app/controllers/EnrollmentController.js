@@ -9,6 +9,30 @@ import Queue from '../../lib/Queue';
 import WelcomeMail from '../jobs/WelcomeMail';
 
 class EnrollmentController {
+  async index(req, res) {
+    const { page = 1 } = req.query;
+
+    const registrations = await Enrollment.findAll({
+      order: ['start_date'],
+      limit: 20,
+      offset: (page - 1) * 20,
+      attributes: ['id', 'start_date', 'end_date', 'price', 'active'],
+      include: [
+        {
+          model: Student,
+          as: 'student',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: Plan,
+          as: 'plan',
+          attributes: ['id', 'title'],
+        },
+      ],
+    });
+    return res.json(registrations);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       student_id: Yup.number().required(),
