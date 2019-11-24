@@ -24,10 +24,17 @@ export const Content = styled.div`
     flex-direction: column;
     margin-top: 30px;
 
-    span {
+    p {
       color: #444444;
       align-self: flex-start;
       margin: 0 0 10px;
+    }
+
+    span {
+      color: #ee4d64;
+      align-self: flex-start;
+      margin: 0 0 20px;
+      font-weight: bold;
     }
 
     input {
