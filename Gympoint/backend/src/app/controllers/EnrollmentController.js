@@ -145,9 +145,23 @@ class EnrollmentController {
   async delete(req, res) {
     const { id } = req.params;
 
-    await Enrollment.destroy({ where: { id } });
+    const student = await Enrollment.findByPk(id);
 
-    return res.send();
+    if (!student) {
+      return res.status(400).json({ error: 'Student does not exists' });
+    }
+
+    const enrollment = await Enrollment.findOne({ where: { id } });
+
+    if (!enrollment) {
+      return res
+        .status(400)
+        .json({ error: 'Student does not have Registration' });
+    }
+
+    await enrollment.destroy();
+
+    return res.json({ ok: 'enrollment deleted' });
   }
 }
 

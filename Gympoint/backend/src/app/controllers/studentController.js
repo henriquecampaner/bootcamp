@@ -2,6 +2,9 @@ import * as Yup from 'yup';
 import { isAfter, parseISO } from 'date-fns';
 import { Op } from 'sequelize';
 import Student from '../models/Student';
+import Enrollment from '../models/Enrollment';
+import Checkin from '../models/Checkin';
+import HelpOrder from '../models/HelpOrder';
 
 class StudentController {
   async index(req, res) {
@@ -104,15 +107,32 @@ class StudentController {
   }
 
   async delete(req, res) {
-    const student = await Student.findByPk(req.params.id);
+    const student_id = req.params.id;
+
+    const student = await Student.findByPk(student_id);
 
     if (!student) {
-      return res.status(400).json({ error: 'Student not found' });
+      return res.status(400).json({ error: 'Student does not exists' });
     }
 
-    await student.destroy(student.id);
+    const enrollment = await Enrollment.findOne({ where: { student_id } });
+    if (enrollment) {
+      await enrollment.destroy();
+    }
 
-    return res.status(200).json({ sucess: 'Deleted with sucess.' });
+    const checkin = await Checkin.findOne({ where: { student_id } });
+    if (checkin) {
+      await checkin.destroy();
+    }
+
+    const help = await HelpOrder.findOne({ where: { student_id } });
+    if (help) {
+      await help.destroy();
+    }
+
+    await student.destroy();
+
+    return res.json({ ok: 'user deleted' });
   }
 }
 
