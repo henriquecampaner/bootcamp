@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MdPersonAdd } from 'react-icons/md';
 import api from '~/services/api';
+import history from '~/services/history';
 
 import {
   Container,
@@ -63,14 +64,19 @@ export default function Students() {
                 <td>{item.email}</td>
                 <td>{item.age}</td>
                 <td>
-                  <BtnEdit type="BtnEdit">Editar</BtnEdit>
+                  <BtnEdit
+                    type="BtnEdit"
+                    onClick={() => history.push(`/students/edit/${item.id}`)}
+                  >
+                    Edit
+                  </BtnEdit>
                   <BtnDelete
                     type="button"
                     onClick={() => {
                       handleDelete(item.id);
                     }}
                   >
-                    Apgar
+                    Delete
                   </BtnDelete>
                 </td>
               </tr>

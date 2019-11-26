@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Container, Content } from './styles';
 
 import logo from '~/assets/logo-horizontal.svg';
@@ -10,7 +11,9 @@ export default function Header() {
         <nav>
           <img src={logo} alt="GymPoint" />
           <ul>
-            <li>Students</li>
+            <li>
+              <Link to="/students">Students</Link>
+            </li>
             <li>Plans</li>
             <li>Enrollments</li>
             <li>Help Orders</li>
