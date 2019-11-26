@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import { isAfter, parseISO } from 'date-fns';
 import { Op } from 'sequelize';
 import Student from '../models/Student';
 import Enrollment from '../models/Enrollment';
@@ -40,7 +39,7 @@ class StudentController {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       email: Yup.string().required(),
-      birthday: Yup.date().required(),
+      age: Yup.number().required(),
       weight: Yup.number().required(),
       height: Yup.number().required(),
     });
@@ -49,13 +48,7 @@ class StudentController {
       return res.status(400).json({ error: 'Validation failed' });
     }
 
-    const { email, birth } = req.body;
-
-    if (isAfter(parseISO(birth), new Date())) {
-      return res
-        .status(400)
-        .json({ error: 'Birth date can not be after current date' });
-    }
+    const { email } = req.body;
 
     const studentExists = await Student.findOne({ where: { email } });
 
@@ -72,7 +65,7 @@ class StudentController {
     const schema = Yup.object().shape({
       name: Yup.string(),
       email: Yup.string(),
-      birth: Yup.date(),
+      age: Yup.number(),
       weight: Yup.number(),
       height: Yup.number(),
     });
@@ -82,13 +75,7 @@ class StudentController {
     }
 
     const { id } = req.params;
-    const { name, email, birthday, weight, height } = req.body;
-
-    if (isAfter(parseISO(birthday), new Date())) {
-      return res
-        .status(400)
-        .json({ error: 'Birth date can not be after current date' });
-    }
+    const { name, email, age, weight, height } = req.body;
 
     const student = await Student.findByPk(id);
 
@@ -100,7 +87,7 @@ class StudentController {
     //   }
     // }
 
-    await student.update({ name, email, birthday, weight, height });
+    await student.update({ name, email, age, weight, height });
     await student.save();
 
     return res.json(student);
