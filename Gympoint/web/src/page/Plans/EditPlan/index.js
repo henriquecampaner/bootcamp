@@ -18,18 +18,20 @@ export default function Students() {
     height: Yup.number(),
   });
 
-  const [student, setStudent] = useState([]);
+  const [plan, setPlan] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
-    async function getStudent() {
-      const { data } = await api.get(`students/${id}`);
+    async function getPlan() {
+      const { data } = await api.get(`/plans/3`);
 
-      setStudent(data);
+      setPlan(data);
     }
 
-    getStudent();
-  }, [id]);
+    getPlan();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleSubmit(data) {
     await api.put(`/students/${id}`, data);
@@ -44,31 +46,27 @@ export default function Students() {
 
         <FormContainer>
           <Form
-            initialData={student}
+            initialData={plan}
             id="form"
             schema={schema}
             onSubmit={handleSubmit}
           >
             <div className="fullwidth">
-              <span>Student Name</span>
-              <Input name="name" />
-            </div>
-            <div className="fullwidth">
-              <span>E-mail</span>
-              <Input name="email" type="email" placeholder="Student email" />
+              <span>Plan Title</span>
+              <Input name="title" />
             </div>
             <div className="colum">
               <div className="columwidth">
-                <span>Age</span>
-                <Input name="age" placeholder="Student age" />
+                <span>Duration</span>
+                <Input name="duration" placeholder="Plan Duration" />
               </div>
               <div className="columwidth">
-                <span>Weight</span>
-                <Input name="weight" placeholder="Student Weight" />
+                <span>Price per month</span>
+                <Input name="price" placeholder="Plan Price" />
               </div>
               <div className="columwidth">
-                <span>Height</span>
-                <Input name="height" placeholder="Student height" />
+                <span>Total</span>
+                <Input name="total" placeholder="Plan Total" />
               </div>
             </div>
           </Form>

@@ -15,19 +15,13 @@ export default function Header() {
               <NavLink to="/students">Students</NavLink>
             </li>
             <li>
-              <Link>
-                Plans
-              </Link>
+              <Link to="/plans">Plans</Link>
             </li>
             <li>
-              <Link>
-                Enrollments
-              </Link>
+              <Link to="/">Enrollments</Link>
             </li>
             <li>
-              <Link>
-                Help Orders
-              </Link>
+              <Link to="/">Help Orders</Link>
             </li>
           </ul>
         </nav>
