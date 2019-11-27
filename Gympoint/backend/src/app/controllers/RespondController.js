@@ -1,6 +1,5 @@
 import HelpOrder from '../models/HelpOrder';
 import Student from '../models/Student';
-import File from '../models/File';
 
 class RespondController {
   async index(req, res) {
@@ -15,13 +14,6 @@ class RespondController {
           model: Student,
           as: 'student',
           attributes: ['id', 'name', 'email'],
-          include: [
-            {
-              model: File,
-              as: 'avatar',
-              attributes: ['id', 'path', 'url'],
-            },
-          ],
         },
       ],
     });

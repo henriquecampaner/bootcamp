@@ -2,6 +2,27 @@ import * as Yup from 'yup';
 import Plan from '../models/Plan';
 
 class PlanController {
+  async show(req, res) {
+    const { id } = req.params;
+
+    const { price, title, duration } = await Plan.findByPk(id);
+
+    const total = duration * price;
+
+    return res.json({
+      price,
+      title,
+      duration,
+      total,
+    });
+  }
+
+  async index(req, res) {
+    const plans = await Plan.findAll();
+
+    return res.json(plans);
+  }
+
   async store(req, res) {
     const schema = Yup.object().shape({
       title: Yup.string().required(),

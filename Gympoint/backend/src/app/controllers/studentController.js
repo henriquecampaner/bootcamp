@@ -79,13 +79,13 @@ class StudentController {
 
     const student = await Student.findByPk(id);
 
-    // if (student.email !== email) {
-    //   const studentExists = await Student.findOne({ where: { email } });
+    if (student.email !== email) {
+      const studentExists = await Student.findOne({ where: { email } });
 
-    //   if (studentExists) {
-    //     return res.status(401).json({ error: 'Email is already in use' });
-    //   }
-    // }
+      if (studentExists) {
+        return res.status(401).json({ error: 'Email is already in use' });
+      }
+    }
 
     await student.update({ name, email, age, weight, height });
     await student.save();
