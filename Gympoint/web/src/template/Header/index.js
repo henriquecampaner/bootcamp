@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { Container, Content } from './styles';
 
 import logo from '~/assets/logo-horizontal.svg';
@@ -12,11 +12,23 @@ export default function Header() {
           <img src={logo} alt="GymPoint" />
           <ul>
             <li>
-              <Link to="/students">Students</Link>
+              <NavLink to="/students">Students</NavLink>
             </li>
-            <li>Plans</li>
-            <li>Enrollments</li>
-            <li>Help Orders</li>
+            <li>
+              <Link>
+                Plans
+              </Link>
+            </li>
+            <li>
+              <Link>
+                Enrollments
+              </Link>
+            </li>
+            <li>
+              <Link>
+                Help Orders
+              </Link>
+            </li>
           </ul>
         </nav>
 

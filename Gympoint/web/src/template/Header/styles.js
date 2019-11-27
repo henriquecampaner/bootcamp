@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 export const Container = styled.div`
   padding: 0 30px;
@@ -32,13 +33,22 @@ export const Content = styled.div`
       flex-direction: row;
 
       li {
-        font-size: 15px;
-        color: #999999;
+        a {
+          font-size: 15px;
+          font-weight: bold;
+          color: #999999;
+          padding: 10px;
+          text-decoration: none;
+          transition: 0.2s;
 
-        padding: 10px;
+          &:hover {
+            color: ${darken(0.2, '#999999')}
+          }
 
-        &:active {
-          color: #444444;
+        }
+
+        a.active {
+          color:#444444;
         }
       }
     }

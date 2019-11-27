@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
-import { MdPersonAdd } from 'react-icons/md';
 import * as Yup from 'yup';
 import api from '~/services/api';
 import history from '~/services/history';
+import Container from '../../../template/Students/StudentContainer/index'
+import StudentHeader from '../../../template/Students/StudentHeader/index'
 
-import { Container, ContentHead, FormContainer } from './styles';
+import {  FormContainer } from './styles';
 
 export default function Students() {
   const schema = Yup.object().shape({
@@ -38,20 +39,7 @@ export default function Students() {
 
   return (
     <Container>
-      <ContentHead>
-        <h2>Edit Student</h2>
-
-        <aside>
-          <Link to="/">
-            <MdPersonAdd size={20} color="#fff" />
-            <span>BACK</span>
-          </Link>
-          <button type="submit" form="form">
-            <MdPersonAdd size={20} color="#fff" />
-            <span>SAVE</span>
-          </button>
-        </aside>
-      </ContentHead>
+      <StudentHeader title="Edit Student" Default/>
 
       <FormContainer>
         <Form
