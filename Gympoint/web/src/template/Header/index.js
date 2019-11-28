@@ -15,10 +15,10 @@ export default function Header() {
               <NavLink to="/students">Students</NavLink>
             </li>
             <li>
-              <Link to="/plans">Plans</Link>
+              <NavLink to="/plans">Plans</NavLink>
             </li>
             <li>
-              <Link to="/">Enrollments</Link>
+              <NavLink to="/enrollments">Enrollments</NavLink>
             </li>
             <li>
               <Link to="/">Help Orders</Link>

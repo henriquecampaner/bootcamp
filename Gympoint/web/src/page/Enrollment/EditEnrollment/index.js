@@ -22,7 +22,7 @@ export default function Students() {
 
   useEffect(() => {
     async function loadPlan() {
-      const { data } = await api.get(`/plans/${id}`);
+      const { data } = await api.get(`/enrollment/${id}`);
       setPlan(data);
     }
 
@@ -42,31 +42,40 @@ export default function Students() {
   return (
     <Container>
       <>
-        <StudentHeader title="Edit Plan" Default form="editPlan" to="/plans" />
+        <StudentHeader
+          title="Edit Enrollment"
+          Default
+          form="editEnrollment"
+          to="/enrollments"
+        />
 
         <FormContainer>
           <Form
             initialData={plan}
-            id="editPlan"
+            id="editEnrollment"
             schema={schema}
             onSubmit={handleSubmit}
           >
             <div className="fullwidth">
-              <span>Plan Title</span>
-              <Input name="title" />
+              <span>Student</span>
+              <Input name="student.name" />
             </div>
             <div className="colum">
               <div className="columwidth">
-                <span>Duration</span>
-                <Input name="duration" placeholder="Plan Duration" />
+                <span>Plan</span>
+                <Input name="plan.title" placeholder="Plan Duration" />
               </div>
               <div className="columwidth">
-                <span>Price per month</span>
-                <Input name="price" placeholder="Plan Price" />
+                <span>Date of Start</span>
+                <Input name="enrollment.start_date" placeholder="Plan Price" />
               </div>
-              <div className="columwidth grey">
-                <span>Total</span>
-                <Input name="total" placeholder="Plan Total" readOnly />
+              <div className="columwidth">
+                <span>Date of ending</span>
+                <Input name="enrollment.end_date" placeholder="Plan Price" />
+              </div>
+              <div className="columwidth">
+                <span>Total Price</span>
+                <Input name="enrollment.price" placeholder="Plan Price" />
               </div>
             </div>
           </Form>

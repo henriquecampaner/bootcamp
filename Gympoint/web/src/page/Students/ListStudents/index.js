@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from '~/services/api';
 import history from '~/services/history';
 import Container from '~/template/Container/index';
-import ContentHead from '~/template/ContentHead'
+import ContentHead from '~/template/ContentHead';
 
 import { StudentsList, BtnEdit, BtnDelete } from './styles';
 
@@ -30,7 +30,7 @@ export default function Students() {
   return (
     <Container>
       <>
-        <ContentHead title="Student Manager" newStudent to="/students/create"/>
+        <ContentHead title="Student Manager" newStudent to="/students/create" />
         <StudentsList>
           <table>
             <thead>

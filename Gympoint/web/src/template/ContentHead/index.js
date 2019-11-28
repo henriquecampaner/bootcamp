@@ -3,7 +3,14 @@ import { MdPersonAdd, MdKeyboardArrowLeft, MdCheck } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import { ContentHeader, AddButton, BackButton, SaveButton } from './styles';
 
-export default function ContentHead({ title, newStudent, Default, to, Plan, form }) {
+export default function ContentHead({
+  title,
+  newStudent,
+  Default,
+  to,
+  Create,
+  form,
+}) {
   return (
     <ContentHeader>
       <h2>{title}</h2>
@@ -19,15 +26,14 @@ export default function ContentHead({ title, newStudent, Default, to, Plan, form
           </>
         ) : null}
 
-        {Plan ? (
+        {Create ? (
           <>
-          <AddButton to={to}>
+            <AddButton to={to}>
               <MdPersonAdd size={20} color="#fff" />
               <span>CADASTRAR</span>
             </AddButton>
-          </>)
-        : null 
-        }
+          </>
+        ) : null}
 
         {Default ? (
           <>
@@ -50,13 +56,15 @@ ContentHead.propTypes = {
   title: PropTypes.string.isRequired,
   newStudent: PropTypes.bool,
   Default: PropTypes.bool,
-  Plan: PropTypes.bool,
+  Create: PropTypes.bool,
   to: PropTypes.string,
+  form: PropTypes.string,
 };
 
 ContentHead.defaultProps = {
   newStudent: false,
   Default: false,
-  Plan: false,
+  Create: false,
   to: '',
+  form: null,
 };

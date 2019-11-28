@@ -30,7 +30,7 @@ export default function Students() {
   return (
     <Container>
       <>
-        <StudentHeader title="Plans Manager" Plan to="/plans/create" />
+        <StudentHeader title="Plans Manager" Create to="/plans/create" />
         <StudentsList>
           <table>
             <thead>

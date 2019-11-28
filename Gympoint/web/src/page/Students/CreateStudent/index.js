@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 import api from '~/services/api';
 import history from '~/services/history';
 import Container from '~/template/Container';
@@ -18,15 +19,24 @@ export default function Students() {
   });
 
   async function handleSubmit(data) {
-    await api.post('/students', data);
-
-    history.push('/students');
+    try {
+      await api.post('/students', data);
+      toast.success('New student added');
+      history.push('/students');
+    } catch (error) {
+      toast.error('Something went wrong');
+    }
   }
 
   return (
     <Container>
       <>
-        <StudentHeader title="Create New Student" Default form="createStudent" to="/students"/>
+        <StudentHeader
+          title="Create New Student"
+          Default
+          form="createStudent"
+          to="/students"
+        />
 
         <FormContainer>
           <Form id="createStudent" schema={schema} onSubmit={handleSubmit}>

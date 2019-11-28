@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 import api from '~/services/api';
 import history from '~/services/history';
 import Container from '~/template/Container/index';
@@ -32,15 +33,24 @@ export default function Students() {
   }, [id]);
 
   async function handleSubmit(data) {
-    await api.put(`/students/${id}`, data);
-
-    history.push('/students');
+    try {
+      await api.put(`/students/${id}`, data);
+      toast.success('Student updated successfully');
+      history.push('/students');
+    } catch (error) {
+      toast.error('Something went wrong');
+    }
   }
 
   return (
     <Container>
       <>
-        <StudentHeader title="Edit Student" Default form="editStudent" to="/students"/>
+        <StudentHeader
+          title="Edit Student"
+          Default
+          form="editStudent"
+          to="/students"
+        />
 
         <FormContainer>
           <Form

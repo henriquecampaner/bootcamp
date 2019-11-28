@@ -21,9 +21,8 @@ export const FormContainer = styled.div`
     }
 
     input[value] {
-      padding-left: 15px;
+      padding-left: 10px;
       font-size: 16px;
-      border-radius: 4px;
     }
 
     span {
