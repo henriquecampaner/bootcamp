@@ -3,8 +3,8 @@ import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import api from '~/services/api';
 import history from '~/services/history';
-import Container from '~/template/Students/StudentContainer';
-import StudentHeader from '~/template/Students/StudentHeader';
+import Container from '~/template/Container';
+import StudentHeader from '~/template/ContentHead';
 
 import { FormContainer } from './styles';
 
@@ -26,10 +26,10 @@ export default function Students() {
   return (
     <Container>
       <>
-        <StudentHeader title="Create New Student" Default />
+        <StudentHeader title="Create New Student" Default form="createStudent" to="/students"/>
 
         <FormContainer>
-          <Form id="form" schema={schema} onSubmit={handleSubmit}>
+          <Form id="createStudent" schema={schema} onSubmit={handleSubmit}>
             <div className="fullwidth">
               <span>Student Name</span>
               <Input name="name" placeholder="Ex: Henrique Campaner" />

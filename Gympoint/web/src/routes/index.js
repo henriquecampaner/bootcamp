@@ -5,6 +5,7 @@ import Route from './Route';
 import SignIn from '~/page/SignIn';
 import Students from '~/page/Students/ListStudents';
 
+import CreatePlans from '~/page/Plans/CreatePlan';
 import Plans from '~/page/Plans/ListPlans';
 import EditPlans from '~/page/Plans/EditPlan';
 
@@ -23,7 +24,7 @@ export default function routes() {
 
       <Route path="/plans/edit/:planId" exact component={EditPlans} isPrivate />
       <Route path="/plans/edit" exact component={EditPlans} isPrivate />
-      <Route path="/plans/create" exact component={Plans} isPrivate />
+      <Route path="/plans/create" exact component={CreatePlans} isPrivate />
       <Route path="/plans/:planId" exact component={Plans} isPrivate />
       <Route path="/plans" exact component={Plans} isPrivate />
     </Switch>

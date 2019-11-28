@@ -18,11 +18,16 @@ export const FormContainer = styled.div`
       padding: 15px 2px;
       border: 1px solid #dddddd;
       border-radius: 4px;
+
+      &::placeholder {
+        padding-left: 10px;
+      }
     }
 
     input[value] {
       padding-left: 10px;
       font-size: 16px;
+      border-radius: 4px;
     }
 
     span {

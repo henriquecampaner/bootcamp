@@ -4,8 +4,8 @@ import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import api from '~/services/api';
 import history from '~/services/history';
-import Container from '../../../template/Students/StudentContainer/index';
-import StudentHeader from '../../../template/Students/StudentHeader/index';
+import Container from '~/template/Container/index';
+import StudentHeader from '~/template/ContentHead/index';
 
 import { FormContainer } from './styles';
 
@@ -40,12 +40,12 @@ export default function Students() {
   return (
     <Container>
       <>
-        <StudentHeader title="Edit Student" Default />
+        <StudentHeader title="Edit Student" Default form="editStudent" to="/students"/>
 
         <FormContainer>
           <Form
             initialData={student}
-            id="form"
+            id="editStudent"
             schema={schema}
             onSubmit={handleSubmit}
           >

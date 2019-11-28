@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import api from '~/services/api';
 import history from '~/services/history';
@@ -18,23 +16,18 @@ export default function Students() {
     height: Yup.number(),
   });
 
-  const [plan, setPlan] = useState([]);
-  const { id } = useParams();
+  const [title, setTitle] = useState('');
+  const [duration, setDuration] = useState(0);
+  const [price, setPrice] = useState(0);
 
-  useEffect(() => {
-    async function getPlan() {
-      const { data } = await api.get(`/plans/3`);
+  function handleChange(e) {
+    setDuration(e.target.value)
+    setPrice(e.target.value)
+  }
 
-      setPlan(data);
-    }
-
-    getPlan();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   async function handleSubmit(data) {
-    await api.put(`/plans/${id}`, data);
+    await api.post(`/plans`, data);
 
     history.push('/plans');
   }
@@ -42,34 +35,33 @@ export default function Students() {
   return (
     <Container>
       <>
-        <StudentHeader title="Edit Plan" Default form="editPlan" to="/plans"/>
+        <StudentHeader title="Create new Plan" Default form="createPlan" to="/plans"/>
 
         <FormContainer>
-          <Form
-            initialData={plan}
-            id="editPlan" 
+          <form
+            id="createPlan" 
             schema={schema}
             onSubmit={handleSubmit}
           >
             <div className="fullwidth">
               <span>Plan Title</span>
-              <Input name="title" />
+              <input name="title" onChange={handleChange}/>
             </div>
             <div className="colum">
               <div className="columwidth">
                 <span>Duration</span>
-                <Input name="duration" placeholder="Plan Duration" />
+                <input name="duration" placeholder="Plan Duration" onChange={handleChange}/>
               </div>
               <div className="columwidth">
                 <span>Price per month</span>
-                <Input name="price" placeholder="Plan Price" />
+                <input name="price" placeholder="Plan Price" onChange={handleChange}/>
               </div>
               <div className="columwidth grey">
                 <span>Total</span>
-                <Input name="total" placeholder="Plan Total" readOnly/>
+                <input name="total" placeholder="Plan Total" readOnly value={price * duration}/>
               </div>
             </div>
-          </Form>
+          </form>
         </FormContainer>
       </>
     </Container>

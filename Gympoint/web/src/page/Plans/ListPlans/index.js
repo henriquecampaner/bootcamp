@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '~/services/api';
 import history from '~/services/history';
-import Container from '~/template/Students/StudentContainer/index';
-import StudentHeader from '~/template/Students/StudentHeader/index';
+import Container from '~/template/Container/index';
+import StudentHeader from '~/template/ContentHead/index';
 
 import { StudentsList, BtnEdit, BtnDelete } from './styles';
 
@@ -30,7 +30,7 @@ export default function Students() {
   return (
     <Container>
       <>
-        <StudentHeader title="Plans Manager" newStudent to="/plans/create" />
+        <StudentHeader title="Plans Manager" Plan to="/plans/create" />
         <StudentsList>
           <table>
             <thead>
