@@ -30,6 +30,12 @@ export const FormContainer = styled.div`
       border-radius: 4px;
     }
 
+    input[type=text]  {
+      padding-left: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+    }
+
     span {
       font-weight: bold;
       align-self: flex-start;

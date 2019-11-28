@@ -19,14 +19,11 @@ export default function Students() {
   const [title, setTitle] = useState('');
   const [duration, setDuration] = useState(0);
   const [price, setPrice] = useState(0);
+  const [data, setData] = useState()
 
-  function handleChange(e) {
-    setDuration(e.target.value)
-    setPrice(e.target.value)
-  }
+  async function handleSubmit() {
+    setData(title, duration, price)
 
-
-  async function handleSubmit(data) {
     await api.post(`/plans`, data);
 
     history.push('/plans');
@@ -45,16 +42,16 @@ export default function Students() {
           >
             <div className="fullwidth">
               <span>Plan Title</span>
-              <input name="title" onChange={handleChange}/>
+              <input name="title" placeholder="Plan name" onChange={e => setTitle(e.target.value)}/>
             </div>
             <div className="colum">
               <div className="columwidth">
                 <span>Duration</span>
-                <input name="duration" placeholder="Plan Duration" onChange={handleChange}/>
+                <input name="duration" placeholder="Plan Duration" onChange={e => setDuration(e.target.value)}/>
               </div>
               <div className="columwidth">
                 <span>Price per month</span>
-                <input name="price" placeholder="Plan Price" onChange={handleChange}/>
+                <input name="price" placeholder="Plan Price" onChange={e => setPrice(e.target.value)}/>
               </div>
               <div className="columwidth grey">
                 <span>Total</span>
