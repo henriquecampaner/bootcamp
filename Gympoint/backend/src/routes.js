@@ -31,11 +31,12 @@ routes.delete('/students/:id', StudentController.delete);
 routes.post('/plans', PlanController.store);
 routes.get('/plans', PlanController.index);
 routes.get('/plans/:id', PlanController.show);
-routes.put('/plans/:planId', PlanController.update);
-routes.delete('/plans/:planId', PlanController.delete);
+routes.put('/plans/:id', PlanController.update);
+routes.delete('/plans/:id', PlanController.delete);
 
 routes.post('/enrollment', EnrollmentController.store);
 routes.get('/enrollment', EnrollmentController.index);
+routes.get('/enrollment/:id', EnrollmentController.show);
 routes.put('/enrollment/:id', EnrollmentController.update);
 routes.delete('/enrollment/:id', EnrollmentController.delete);
 

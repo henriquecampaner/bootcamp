@@ -62,13 +62,13 @@ class PlanController {
         .json({ error: 'There are details missing or wrong' });
     }
 
-    const plan = await Plan.findByPk(req.params.planId);
+    const plan = await Plan.findByPk(req.params.id);
 
-    const planExists = req.body.title;
+    // const planExists = req.body.title;
 
-    if (planExists === plan.title) {
-      return res.status(400).json({ error: 'Plan alredy exists' });
-    }
+    // if (planExists === plan.title) {
+    //   return res.status(400).json({ error: 'Plan alredy exists' });
+    // }
 
     const { title, duration, price } = await plan.update(req.body);
 
@@ -76,7 +76,7 @@ class PlanController {
   }
 
   async delete(req, res) {
-    const plan = await Plan.findByPk(req.params.planId);
+    const plan = await Plan.findByPk(req.params.id);
 
     if (!plan) {
       return res.status(400).json({ error: 'Plan not found' });

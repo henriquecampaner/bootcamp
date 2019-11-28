@@ -9,6 +9,20 @@ import Queue from '../../lib/Queue';
 import WelcomeMail from '../jobs/WelcomeMail';
 
 class EnrollmentController {
+  async show(req, res) {
+    const { id } = req.params;
+
+    const enrollment = await Enrollment.findByPk(id);
+
+    if (enrollment) {
+      const student = await Student.findByPk(enrollment.student_id);
+      const plan = await Plan.findByPk(enrollment.plan_id);
+      return res.json({ enrollment, plan, student });
+    }
+
+    return res.json(enrollment);
+  }
+
   async index(req, res) {
     const { page = 1 } = req.query;
 
@@ -104,42 +118,47 @@ class EnrollmentController {
     const enrollment = await Enrollment.findByPk(id);
     const plan = await Plan.findByPk(plan_id);
 
-    // Check if admin can edit student_id
-    if (student_id !== enrollment.student_id) {
-      const studentEnrollmentExists = await Enrollment.findOne({
-        where: { student_id },
-      });
+    if (plan) {
+      // Check if admin can edit student_id
+      if (student_id !== enrollment.student_id) {
+        const studentEnrollmentExists = await Enrollment.findOne({
+          where: { student_id },
+        });
 
-      if (studentEnrollmentExists) {
-        return res
-          .status(401)
-          .json({ error: 'A enrollment with this student already exists' });
+        if (studentEnrollmentExists) {
+          return res
+            .status(401)
+            .json({ error: 'A enrollment with this student already exists' });
+        }
       }
+
+      let { end_date, price } = enrollment;
+
+      // Calculate the full price and end date
+      if (plan_id !== enrollment.plan_id) {
+        price = plan.duration * plan.price;
+        end_date = addMonths(parseISO(start_date), plan.duration);
+      }
+
+      // Calculate the new end date
+      if (start_date !== enrollment.start_date) {
+        end_date = addMonths(parseISO(start_date), plan.duration);
+      }
+
+      await enrollment.update({
+        student_id,
+        plan_id,
+        start_date,
+        end_date,
+        price,
+      });
+      await enrollment.save();
+
+      return res.json(enrollment);
     }
-
-    let { price, end_date } = enrollment;
-
-    // Calculate the full price and end date
-    if (plan_id !== enrollment.plan_id) {
-      price = plan.duration * plan.price;
-      end_date = addMonths(parseISO(start_date), plan.duration);
-    }
-
-    // Calculate the new end date
-    if (start_date !== enrollment.start_date) {
-      end_date = addMonths(parseISO(start_date), plan.duration);
-    }
-
-    await enrollment.update({
-      student_id,
-      plan_id,
-      start_date,
-      end_date,
-      price,
-    });
-    await enrollment.save();
-
-    return res.json(enrollment);
+    return res
+      .status(401)
+      .json({ error: 'Student does not have an enrollment' });
   }
 
   async delete(req, res) {
