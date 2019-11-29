@@ -45,10 +45,19 @@ export const FormContainer = styled.div`
       justify-content: space-between;
       align-items: flex-end;
 
+      .selectInput {
+          
+      input {
+        height: 36px;
+        width: 100%;
+      }
+    }
+
       .columwidth {
-        width: 32%;
+        width: 22%;
         display: flex;
         flex-direction: column;
+        
 
         &.grey input {
           background: #eee;

@@ -7,6 +7,9 @@ import api from '~/services/api';
 import history from '~/services/history';
 import Container from '~/template/Container/index';
 import StudentHeader from '~/template/ContentHead/index';
+import DatePicker from "react-datepicker";
+import Select from 'react-select'
+
 
 import { FormContainer } from './styles';
 
@@ -18,6 +21,7 @@ export default function Students() {
   });
 
   const [plan, setPlan] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
   const { id } = useParams();
 
   useEffect(() => {
@@ -28,6 +32,10 @@ export default function Students() {
 
     loadPlan();
   }, [id]);
+
+  function handleChange(date) {
+    setStartDate(date);
+  }
 
   async function handleSubmit(data) {
     try {
@@ -63,11 +71,12 @@ export default function Students() {
             <div className="colum">
               <div className="columwidth">
                 <span>Plan</span>
-                <Input name="plan.title" placeholder="Plan Duration" />
+                {/* <Input name="plan.title" placeholder="Plan Duration" /> */}
+                <Select className="selectInput" placeholder="Selecione o plano"/>
               </div>
               <div className="columwidth">
                 <span>Date of Start</span>
-                <Input name="enrollment.start_date" placeholder="Plan Price" />
+                <DatePicker selected={startDate} onChange={handleChange}/>
               </div>
               <div className="columwidth">
                 <span>Date of ending</span>
