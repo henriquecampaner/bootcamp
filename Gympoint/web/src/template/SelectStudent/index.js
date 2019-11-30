@@ -6,7 +6,7 @@ import { useField } from '@rocketseat/unform';
 
 import api from '~/services/api';
 
-export default function StudentSelect({ name, label, setChange }) {
+export default function StudentSelect({ name, label, setChange, defaultName }) {
   const ref = useRef(null);
   const { fieldName, registerField, defaultValue, error } = useField(name);
 
@@ -43,7 +43,6 @@ export default function StudentSelect({ name, label, setChange }) {
       setChange(student);
     }
   }
-
   return (
     <>
       {label && <label htmlFor={fieldName}>{label}</label>}
@@ -51,7 +50,7 @@ export default function StudentSelect({ name, label, setChange }) {
       <AsyncSelect
         name={fieldName}
         aria-label={fieldName}
-        defaultValue
+        defaultValue={defaultName}
         value={defaultValue}
         ref={ref}
         placeholder="Search Student"

@@ -3,6 +3,7 @@ import api from '~/services/api';
 import history from '~/services/history';
 import Container from '~/template/Container/index';
 import StudentHeader from '~/template/ContentHead/index';
+import { formatPrice } from '~/util/format';
 
 import { StudentsList, BtnEdit, BtnDelete } from './styles';
 
@@ -47,7 +48,7 @@ export default function Students() {
                 <tr key={plan.id}>
                   <td>{plan.title}</td>
                   <td>{plan.duration}</td>
-                  <td>{plan.price}</td>
+                  <td>{formatPrice(plan.price)}</td>
                   <td>
                     <BtnEdit
                       type="BtnEdit"

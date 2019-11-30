@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { MdCheckCircle } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import api from '~/services/api';
-import history from '~/services/history';
 import Container from '~/template/Container/index';
 import ContentHead from '~/template/ContentHead';
 
-import { EnrollmentList, BtnEdit, BtnDelete } from './styles';
+import { EnrollmentList, BtnDelete } from './styles';
 
 export default function Students() {
   const [enrollments, setEnrollments] = useState([]);
@@ -38,8 +39,8 @@ export default function Students() {
               <tr>
                 <th>Name</th>
                 <th>Plan</th>
-                <th>Start</th>
-                <th>End</th>
+                <th>Start Date</th>
+                <th>End Date</th>
                 <th>Active</th>
                 {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <th />
@@ -56,8 +57,10 @@ export default function Students() {
                       'Plan Deleted'
                     )}
                   </td>
-                  <td>{enrollment.start_date}</td>
-                  <td>{enrollment.end_date}</td>
+                  <td>
+                    {format(new Date(enrollment.start_date), 'dd-MM-yyyy')}
+                  </td>
+                  <td>{format(new Date(enrollment.end_date), 'dd-MM-yyyy')}</td>
                   <td>
                     {enrollment.active ? (
                       <MdCheckCircle color="#42cb59" size={20} />
@@ -66,14 +69,14 @@ export default function Students() {
                     )}
                   </td>
                   <td>
-                    <BtnEdit
-                      type="BtnEdit"
-                      onClick={() =>
-                        history.push(`enrollments/edit/${enrollment.id}`)
-                      }
+                    <Link
+                      to={{
+                        pathname: `enrollments/edit/${enrollment.id}`,
+                        state: { enrollment },
+                      }}
                     >
                       Edit
-                    </BtnEdit>
+                    </Link>
                     <BtnDelete
                       type="button"
                       onClick={() => {
