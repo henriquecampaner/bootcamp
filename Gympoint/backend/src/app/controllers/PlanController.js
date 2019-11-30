@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Plan from '../models/Plan';
+import Enrollment from '../models/Enrollment';
 
 class PlanController {
   async show(req, res) {
@@ -80,6 +81,16 @@ class PlanController {
 
     if (!plan) {
       return res.status(400).json({ error: 'Plan not found' });
+    }
+
+    const enrollmentExist = await Enrollment.findOne({
+      where: { plan_id: plan.id },
+    });
+
+    if (enrollmentExist) {
+      return res
+        .status(400)
+        .json({ error: 'This Plan has a Enrollment associated' });
     }
 
     await plan.destroy(plan.id);

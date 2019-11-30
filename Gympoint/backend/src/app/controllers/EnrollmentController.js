@@ -40,7 +40,7 @@ class EnrollmentController {
         {
           model: Plan,
           as: 'plan',
-          attributes: ['id', 'title'],
+          attributes: ['id', 'title', 'duration', 'price'],
         },
       ],
     });
@@ -164,18 +164,10 @@ class EnrollmentController {
   async delete(req, res) {
     const { id } = req.params;
 
-    const student = await Enrollment.findByPk(id);
-
-    if (!student) {
-      return res.status(400).json({ error: 'Student does not exists' });
-    }
-
     const enrollment = await Enrollment.findOne({ where: { id } });
 
     if (!enrollment) {
-      return res
-        .status(400)
-        .json({ error: 'Student does not have Registration' });
+      return res.status(400).json({ error: 'Enrollment does not exist' });
     }
 
     await enrollment.destroy();
