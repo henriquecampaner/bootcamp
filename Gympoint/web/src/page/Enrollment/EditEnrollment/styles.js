@@ -13,6 +13,13 @@ export const FormContainer = styled.div`
   form {
     width: 100%;
 
+    label {
+      font-size: 15px;
+      color: #444;
+      font-weight: bold;
+      margin: 15px 0 5px 0;
+    }
+
     input {
       width: 100%;
       padding: 15px 2px;
@@ -46,18 +53,16 @@ export const FormContainer = styled.div`
       align-items: flex-end;
 
       .selectInput {
-          
-      input {
-        height: 36px;
-        width: 100%;
+        input {
+          height: 36px;
+          width: 100%;
+        }
       }
-    }
 
       .columwidth {
         width: 22%;
         display: flex;
         flex-direction: column;
-        
 
         &.grey input {
           background: #eee;

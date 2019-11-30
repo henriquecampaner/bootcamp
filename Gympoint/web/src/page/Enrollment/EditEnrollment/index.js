@@ -3,13 +3,14 @@ import { useParams } from 'react-router-dom';
 import { Form, Input } from '@rocketseat/unform';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import DatePicker from 'react-datepicker';
+import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 import api from '~/services/api';
 import history from '~/services/history';
 import Container from '~/template/Container/index';
 import StudentHeader from '~/template/ContentHead/index';
-import DatePicker from "react-datepicker";
-import Select from 'react-select'
-
+import SelectStudent from '~/template/SelectStudent';
 
 import { FormContainer } from './styles';
 
@@ -20,14 +21,23 @@ export default function Students() {
     price: Yup.number(),
   });
 
-  const [plan, setPlan] = useState([]);
+  const [enrollment, setEnrollment] = useState({});
   const [startDate, setStartDate] = useState(new Date());
+  const [plan, setPlan] = useState({});
   const { id } = useParams();
+
+  const flavourOptions = [
+    { value: 'vanilla', label: 'Vanilla', rating: 'safe' },
+    { value: 'chocolate', label: 'Chocolate', rating: 'good' },
+    { value: 'strawberry', label: 'Strawberry', rating: 'wild' },
+    { value: 'salted-caramel', label: 'Salted Caramel', rating: 'crazy' },
+  ];
 
   useEffect(() => {
     async function loadPlan() {
       const { data } = await api.get(`/enrollment/${id}`);
-      setPlan(data);
+      setEnrollment(data);
+      setPlan([{ value: data.plan.title, label: data.plan.title }]);
     }
 
     loadPlan();
@@ -38,14 +48,16 @@ export default function Students() {
   }
 
   async function handleSubmit(data) {
-    try {
-      await api.put(`/plans/${id}`, data);
-      toast.success('Plan updated successfully');
-      history.push('/plans');
-    } catch (error) {
-      toast.error('Something went wrong');
-    }
+    // try {
+    //   await api.put(`/plans/${id}`, data);
+    //   toast.success('Plan updated successfully');
+    //   history.push('/plans');
+    // } catch (error) {
+    //   toast.error('Something went wrong');
+    // }
   }
+
+  console.log(plan);
 
   return (
     <Container>
@@ -59,24 +71,22 @@ export default function Students() {
 
         <FormContainer>
           <Form
-            initialData={plan}
+            initialData={enrollment}
             id="editEnrollment"
             schema={schema}
             onSubmit={handleSubmit}
           >
             <div className="fullwidth">
-              <span>Student</span>
-              <Input name="student.name" />
+              <SelectStudent name="name" label="STUDENT" />
             </div>
             <div className="colum">
               <div className="columwidth">
                 <span>Plan</span>
-                {/* <Input name="plan.title" placeholder="Plan Duration" /> */}
-                <Select className="selectInput" placeholder="Selecione o plano"/>
+                <Select options={plan} defaultValue={plan[1]} value={plan} />
               </div>
               <div className="columwidth">
                 <span>Date of Start</span>
-                <DatePicker selected={startDate} onChange={handleChange}/>
+                <DatePicker selected={startDate} onChange={handleChange} />
               </div>
               <div className="columwidth">
                 <span>Date of ending</span>
