@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StudentsList = styled.main`
+export const PlansList = styled.main`
   margin-top: 20px;
   width: 100%;
   background: #fff;
@@ -14,27 +14,27 @@ export const StudentsList = styled.main`
     width: 100%;
 
     thead th {
-      text-align: left;
       font-size: 16px;
+      text-align: center;
     }
 
     thead th:first-child {
-      padding-left: 10px;
+      text-align: left;
     }
 
     td:last-child {
-      width: 20%;
-      text-align: right;
-      padding-right: 10px;
+      text-align: center;
+      width: 10%;
+    }
+
+    td {
+      text-align: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
     }
 
     td:first-child {
-      padding-left: 10px;
-    }
-
-    tbody td {
-      padding: 12px 12px 12px 0;
-      border-bottom: 1px solid #eee;
+      text-align: left;
     }
 
     button {

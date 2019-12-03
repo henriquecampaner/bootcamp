@@ -42,13 +42,12 @@ export const Content = styled.div`
           transition: 0.2s;
 
           &:hover {
-            color: ${darken(0.2, '#999999')}
+            color: ${darken(0.2, '#999999')};
           }
-
         }
 
         a.active {
-          color:#444444;
+          color: #444444;
         }
       }
     }

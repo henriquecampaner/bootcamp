@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MdPersonAdd, MdKeyboardArrowLeft, MdCheck } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import { ContentHeader, AddButton, BackButton, SaveButton } from './styles';
+import api from '~/services/api';
 
 export default function ContentHead({
   title,
@@ -10,7 +11,22 @@ export default function ContentHead({
   to,
   Create,
   form,
+  setStudents,
 }) {
+  const [search, setSearch] = useState('');
+  async function handleKeyPress(key) {
+    if (key === 'Enter') {
+      const { data } = await api.get('students', {
+        params: {
+          name: search,
+        },
+      });
+      setStudents(data);
+    }
+  }
+  function handleSearch(input) {
+    setSearch(input);
+  }
   return (
     <ContentHeader>
       <h2>{title}</h2>
@@ -20,9 +36,13 @@ export default function ContentHead({
           <>
             <AddButton to={to}>
               <MdPersonAdd size={20} color="#fff" />
-              <span>CADASTRAR</span>
+              <span>NEW REGISTER</span>
             </AddButton>
-            <input placeholder="Search student" />
+            <input
+              placeholder="Search student"
+              onChange={e => handleSearch(e.target.value)}
+              onKeyPress={e => handleKeyPress(e.key)}
+            />
           </>
         ) : null}
 
@@ -30,7 +50,7 @@ export default function ContentHead({
           <>
             <AddButton to={to}>
               <MdPersonAdd size={20} color="#fff" />
-              <span>CADASTRAR</span>
+              <span>NEW REGISTER</span>
             </AddButton>
           </>
         ) : null}
@@ -59,9 +79,11 @@ ContentHead.propTypes = {
   Create: PropTypes.bool,
   to: PropTypes.string,
   form: PropTypes.string,
+  setStudents: PropTypes.func,
 };
 
 ContentHead.defaultProps = {
+  setStudents: null,
   newStudent: false,
   Default: false,
   Create: false,

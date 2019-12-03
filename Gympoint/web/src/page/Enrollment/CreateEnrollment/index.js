@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { Form } from '@rocketseat/unform';
+import { Form, Input } from '@rocketseat/unform';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
-import { addMonths, parseISO } from 'date-fns';
-import { useSelector } from 'react-redux';
+import { parseISO, format, addYears, addMonths, startOfToday } from 'date-fns';
+
+import pt from 'date-fns/locale/pt';
 import api from '~/services/api';
 import history from '~/services/history';
 import Container from '~/template/Container';
@@ -22,66 +22,40 @@ const schema = Yup.object().shape({
 });
 
 export default function EditEnrollment() {
-  const { enrollment } = useSelector(state => state.enrollment);
-
-  const { id } = useParams();
-
-  const [plan, setPlan] = useState();
   const [student, setStudent] = useState();
-  const [selectPlan, SetselectPlan] = useState({});
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [selectPlan, SetselectPlan] = useState({ duration: 1 });
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [test, setTest] = useState();
 
   useMemo(() => {
-    if (enrollment) {
-      setPlan({
-        value: enrollment.plan.id,
-        label: enrollment.plan.title,
-        duration: enrollment.plan.duration,
-        price: enrollment.plan.price,
-        total_price: enrollment.price,
-      });
-
-      setStudent({
-        value: enrollment.student.id,
-        label: enrollment.student.name,
-      });
-
-      SetselectPlan({
-        value: enrollment.plan.value,
-        label: enrollment.plan.title,
-        duration: enrollment.plan.duration,
-        price: enrollment.plan.price,
-        total_price: enrollment.price,
-      });
-
-      setStartDate(new Date(enrollment.start_date));
-
-      setEndDate(parseISO(enrollment.end_date));
-    } else {
-      history.push('/enrollments');
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enrollment]);
-
-  useEffect(() => {
-    function handleEndDate() {
+    setTest(true);
+    if (test) {
       setEndDate(addMonths(startDate, selectPlan.duration));
     }
-    handleEndDate();
+    return new Date();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectPlan, startDate]);
 
   function handleChange(selectedOption) {
     SetselectPlan(selectedOption);
   }
 
+  useMemo(() => {
+    setTest(true);
+    if (test) {
+      setEndDate(addMonths(startDate, selectPlan.duration));
+    }
+    return new Date();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectPlan, startDate]);
+
   async function handleSubmit() {
+    const student_id = student.value;
     const plan_id = selectPlan.value;
-    const student_id = enrollment.student.id;
     const start_date = startDate;
     try {
-      await api.put(`/enrollment/${id}`, { plan_id, student_id, start_date });
+      await api.post(`/enrollment`, { plan_id, student_id, start_date });
       toast.success('Plan updated successfully');
       history.push('/enrollments');
     } catch (error) {
@@ -94,14 +68,14 @@ export default function EditEnrollment() {
         <StudentHeader
           title="Edit Enrollment"
           Default
-          form="editEnrollment"
+          form="newEnrollment"
           to="/enrollments"
         />
 
         <FormContainer>
           <Form
             initialData
-            id="editEnrollment"
+            id="newEnrollment"
             schema={schema}
             onSubmit={handleSubmit}
           >
@@ -113,8 +87,8 @@ export default function EditEnrollment() {
                 isSearchable
                 isClearable
                 setStudent={setStudent}
-                defaultValue={student}
                 required
+                placeholder="Buscar aluno"
               />
             </div>
 
@@ -122,13 +96,15 @@ export default function EditEnrollment() {
               <div className="columwidth">
                 <span>Plan</span>
                 <SelectPlan
-                  name="plan"
-                  isSearchable
-                  defaultValue={plan}
-                  value={selectPlan}
+                  name="plan_id"
+                  id="plan_id"
+                  className="planSelector"
+                  isSearchable={false}
+                  isClearable
+                  required
+                  placeholder="Selecione o plano"
+                  setPlan={SetselectPlan}
                   onChange={handleChange}
-                  selectPlan={selectPlan}
-                  setPlan={setPlan}
                 />
               </div>
 
@@ -144,10 +120,10 @@ export default function EditEnrollment() {
               <div className="columwidth">
                 <span>Date of ending</span>
                 <DatePicker
-                  disabled
-                  name="end_date"
-                  selected={endDate}
                   dateFormat="dd/MM/yyyy"
+                  name="end_date"
+                  disabled
+                  selected={endDate}
                 />
               </div>
               <div className="columwidth">
@@ -155,7 +131,7 @@ export default function EditEnrollment() {
                 <CurrencyInput
                   name="price"
                   placeholder="Plan Price"
-                  disabled
+                  readOnly
                   getChange={selectPlan.price * selectPlan.duration}
                 />
               </div>

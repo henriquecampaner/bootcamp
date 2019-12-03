@@ -1,14 +1,14 @@
 import produce from 'immer';
 
 const INITITAL_STATE = {
-  student: null,
+  plan: null,
 };
 
 export default function user(state = INITITAL_STATE, action) {
   switch (action.type) {
-    case '@auth/STUDENT_SUCCESS':
+    case '@plan/PLAN_SUCCESS':
       return produce(state, draft => {
-        draft.student = action.payload.student;
+        draft.plan = action.payload.data;
       });
     default:
       return state;

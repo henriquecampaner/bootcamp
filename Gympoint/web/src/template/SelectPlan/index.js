@@ -36,7 +36,6 @@ export default function PlanSelector({ name, setPlan, ...rest }) {
       aria-label={name}
       options={plans}
       onChange={handleChange}
-      defaultValue
       {...rest}
     />
   );
@@ -45,10 +44,4 @@ export default function PlanSelector({ name, setPlan, ...rest }) {
 PlanSelector.propTypes = {
   name: PropTypes.string.isRequired,
   setPlan: PropTypes.func.isRequired,
-  defaultValue: PropTypes.shape({
-    value: PropTypes.number.isRequired,
-    label: PropTypes.string.isRequired,
-    duration: PropTypes.number.isRequired,
-    total_price: PropTypes.string.isRequired,
-  }).isRequired,
 };

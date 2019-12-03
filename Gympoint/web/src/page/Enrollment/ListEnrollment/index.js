@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
+
 import { MdCheckCircle } from 'react-icons/md';
-import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
+
+import { useDispatch } from 'react-redux';
+import history from '~/services/history';
+import { enrollmentRequest } from '~/store/modules/enrollment/actions';
+
 import api from '~/services/api';
+
 import Container from '~/template/Container/index';
 import ContentHead from '~/template/ContentHead';
-
-import { EnrollmentList, BtnDelete } from './styles';
+import { EnrollmentList, BtnDelete, BtnEdit } from './styles';
 
 export default function Students() {
+  const dispatch = useDispatch();
   const [enrollments, setEnrollments] = useState([]);
 
   useEffect(() => {
@@ -29,10 +35,19 @@ export default function Students() {
     }
   }
 
+  async function handleEdit(enrollment) {
+    dispatch(enrollmentRequest(enrollment));
+    history.push(`/enrollments/edit/${enrollment.id}`);
+  }
+
   return (
     <Container>
       <>
-        <ContentHead title="Enrollments Manager" Create to="/students/create" />
+        <ContentHead
+          title="Enrollments Manager"
+          Create
+          to="/enrollments/create"
+        />
         <EnrollmentList>
           <table>
             <thead>
@@ -69,14 +84,9 @@ export default function Students() {
                     )}
                   </td>
                   <td>
-                    <Link
-                      to={{
-                        pathname: `enrollments/edit/${enrollment.id}`,
-                        state: { enrollment },
-                      }}
-                    >
+                    <BtnEdit onClick={() => handleEdit(enrollment)}>
                       Edit
-                    </Link>
+                    </BtnEdit>
                     <BtnDelete
                       type="button"
                       onClick={() => {

@@ -14,22 +14,19 @@ class EnrollmentController {
 
     const enrollment = await Enrollment.findByPk(id);
 
-    if (enrollment) {
-      const student = await Student.findByPk(enrollment.student_id);
-      const plan = await Plan.findByPk(enrollment.plan_id);
-      return res.json({ enrollment, plan, student });
+    if (!enrollment) {
+      return res.status(404).json({ error: 'Enrollment does not exists' });
     }
 
-    return res.json(enrollment);
+    const student = await Student.findByPk(enrollment.student_id);
+    const plan = await Plan.findByPk(enrollment.plan_id);
+
+    return res.json({ enrollment, plan, student });
   }
 
   async index(req, res) {
-    const { page = 1 } = req.query;
-
-    const registrations = await Enrollment.findAll({
+    const enrollment = await Enrollment.findAll({
       order: ['start_date'],
-      limit: 20,
-      offset: (page - 1) * 20,
       attributes: ['id', 'start_date', 'end_date', 'price', 'active'],
       include: [
         {
@@ -44,7 +41,7 @@ class EnrollmentController {
         },
       ],
     });
-    return res.json(registrations);
+    return res.json(enrollment);
   }
 
   async store(req, res) {

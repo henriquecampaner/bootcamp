@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { Form, Input } from '@rocketseat/unform';
@@ -6,6 +6,9 @@ import api from '~/services/api';
 import history from '~/services/history';
 import Container from '~/template/Container/index';
 import StudentHeader from '~/template/ContentHead/index';
+import { formatPrice } from '~/util/format';
+
+import CurrencyInput from '~/template/CurrencyInput';
 
 import { FormContainer } from './styles';
 
@@ -16,12 +19,21 @@ export default function Students() {
     price: Yup.number().required(),
   });
 
-  const [duration, setDuration] = useState(0);
-  const [price, setPrice] = useState(0);
+  const [total, setTotal] = useState('');
+  const [newPrice, setNewPrice] = useState('');
+  const [newDuration, setNewDuration] = useState('');
 
-  async function handleSubmit(data) {
+  useEffect(() => {
+    if (newPrice && newDuration) {
+      setTotal(formatPrice(newPrice * newDuration));
+    } else {
+      setTotal('');
+    }
+  }, [newPrice, newDuration]);
+
+  async function handleSubmit({ title, duration, price }) {
     try {
-      await api.post(`/plans`, data);
+      await api.post(`/plans`, { title, duration, price });
       toast.success('successfully created plan');
       history.push('/plans');
     } catch (error) {
@@ -51,25 +63,20 @@ export default function Students() {
                 <Input
                   name="duration"
                   placeholder="Plan Duration"
-                  onChange={e => setDuration(e.target.value)}
+                  onChange={event => setNewDuration(event.target.value)}
                 />
               </div>
               <div className="columwidth">
                 <span>Price per month</span>
-                <Input
+                <CurrencyInput
                   name="price"
                   placeholder="Plan Price"
-                  onChange={e => setPrice(e.target.value)}
+                  setChange={setNewPrice}
                 />
               </div>
               <div className="columwidth grey">
                 <span>Total</span>
-                <input
-                  name="total"
-                  placeholder="Plan Total"
-                  readOnly
-                  value={price * duration}
-                />
+                <Input value={total} name="total" disabled />
               </div>
             </div>
           </Form>

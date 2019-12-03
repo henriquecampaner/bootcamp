@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import api from '~/services/api';
-import history from '~/services/history';
 import Container from '~/template/Container/index';
 import StudentHeader from '~/template/ContentHead/index';
 import { formatPrice } from '~/util/format';
+import { planRequest } from '~/store/modules/plan/actions';
+import history from '~/services/history';
 
-import { StudentsList, BtnEdit, BtnDelete } from './styles';
+import { PlansList, BtnEdit, BtnDelete } from './styles';
 
 export default function Students() {
+  const dispatch = useDispatch();
   const [plans, setPlans] = useState([]);
 
   async function loadplans() {
@@ -28,11 +31,16 @@ export default function Students() {
     }
   }
 
+  async function handleEdit(plan) {
+    dispatch(planRequest(plan));
+    history.push(`/plans/edit/${plan.id}`);
+  }
+
   return (
     <Container>
       <>
         <StudentHeader title="Plans Manager" Create to="/plans/create" />
-        <StudentsList>
+        <PlansList>
           <table>
             <thead>
               <tr>
@@ -50,10 +58,7 @@ export default function Students() {
                   <td>{plan.duration}</td>
                   <td>{formatPrice(plan.price)}</td>
                   <td>
-                    <BtnEdit
-                      type="BtnEdit"
-                      onClick={() => history.push(`/plans/edit/${plan.id}`)}
-                    >
+                    <BtnEdit type="BtnEdit" onClick={() => handleEdit(plan)}>
                       Edit
                     </BtnEdit>
                     <BtnDelete
@@ -69,7 +74,7 @@ export default function Students() {
               ))}
             </tbody>
           </table>
-        </StudentsList>
+        </PlansList>
       </>
     </Container>
   );

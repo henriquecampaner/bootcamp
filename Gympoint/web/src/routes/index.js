@@ -14,6 +14,7 @@ import CreateStudent from '~/page/Students/CreateStudent';
 
 import Enrollments from '~/page/Enrollment/ListEnrollment';
 import EditEnrollments from '~/page/Enrollment/EditEnrollment';
+import CreateEnrollments from '~/page/Enrollment/CreateEnrollment';
 
 export default function routes() {
   return (
@@ -35,6 +36,12 @@ export default function routes() {
         path="/enrollments/edit/:id"
         exact
         component={EditEnrollments}
+        isPrivate
+      />
+      <Route
+        path="/enrollments/create"
+        exact
+        component={CreateEnrollments}
         isPrivate
       />
       <Route path="/enrollments" exact component={Enrollments} isPrivate />

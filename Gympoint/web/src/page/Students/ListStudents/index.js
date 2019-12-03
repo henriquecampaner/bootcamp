@@ -30,7 +30,13 @@ export default function Students() {
   return (
     <Container>
       <>
-        <ContentHead title="Student Manager" newStudent to="/students/create" />
+        <ContentHead
+          title="Student Manager"
+          newStudent
+          type="text"
+          setStudents={setStudents}
+          to="/students/create"
+        />
         <StudentsList>
           <table>
             <thead>

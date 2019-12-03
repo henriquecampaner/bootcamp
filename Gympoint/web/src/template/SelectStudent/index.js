@@ -1,34 +1,32 @@
-import React, { useRef, useEffect } from 'react';
-import AsyncSelect from 'react-select/async';
+import React, { useState, useEffect } from 'react';
+import Async from 'react-select/async';
 import PropTypes from 'prop-types';
-
-import { useField } from '@rocketseat/unform';
 
 import api from '~/services/api';
 
-export default function StudentSelect({ name, label, setChange, defaultName }) {
-  const ref = useRef(null);
-  const { fieldName, registerField, defaultValue, error } = useField(name);
+import { Container } from './styles';
 
-  function parseSelectValue(selectRef) {
-    return selectRef.select.state.value;
-  }
+export default function StudentSelector({ name, setStudent, ...rest }) {
+  const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    registerField({
-      name: fieldName,
-      ref: ref.current,
-      path: 'state.value',
-      parseValue: parseSelectValue,
-      clearValue: selectRef => {
-        selectRef.select.clearValue();
-      },
-    });
-  }, [ref.current, fieldName]); // eslint-disable-line
+    const loadStudentsAndPlans = async () => {
+      const loadedStudents = await api.get('/students');
+
+      const studentOptions = [];
+      loadedStudents.data.forEach(student =>
+        studentOptions.push({ value: student.id, label: student.name })
+      );
+
+      setStudents(studentOptions);
+    };
+
+    loadStudentsAndPlans();
+  }, []);
 
   function loadOptions(inputValue) {
     return api
-      .get(`students?name=${inputValue}`)
+      .get(`students?q=${inputValue}`)
       .then(r => r.data)
       .then(r =>
         r.map(student => ({
@@ -38,38 +36,31 @@ export default function StudentSelect({ name, label, setChange, defaultName }) {
       );
   }
 
-  function handleOnChange(student) {
-    if (setChange) {
-      setChange(student);
-    }
-  }
+  const handleChange = change => {
+    setStudent(change);
+  };
+
   return (
-    <>
-      {label && <label htmlFor={fieldName}>{label}</label>}
-
-      <AsyncSelect
-        name={fieldName}
-        aria-label={fieldName}
-        defaultValue={defaultName}
-        value={defaultValue}
-        ref={ref}
-        placeholder="Search Student"
-        loadOptions={loadOptions}
+    <Container>
+      <Async
+        cacheOptions
         defaultOptions
-        onChange={student => handleOnChange(student)}
+        loadOptions={loadOptions}
+        name={name}
+        aria-label={name}
+        options={students}
+        onChange={handleChange}
+        {...rest}
       />
-
-      {error && <span>{error}</span>}
-    </>
+    </Container>
   );
 }
 
-StudentSelect.propTypes = {
+StudentSelector.propTypes = {
   name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  setChange: PropTypes.func,
+  setStudent: PropTypes.func,
 };
 
-StudentSelect.defaultProps = {
-  setChange: PropTypes.null,
+StudentSelector.defaultProps = {
+  setStudent: null,
 };
