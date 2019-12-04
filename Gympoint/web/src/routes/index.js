@@ -16,6 +16,8 @@ import Enrollments from '~/page/Enrollment/ListEnrollment';
 import EditEnrollments from '~/page/Enrollment/EditEnrollment';
 import CreateEnrollments from '~/page/Enrollment/CreateEnrollment';
 
+import ListHelp from '~/page/AwnserRequest';
+
 export default function routes() {
   return (
     <Switch>
@@ -45,6 +47,8 @@ export default function routes() {
         isPrivate
       />
       <Route path="/enrollments" exact component={Enrollments} isPrivate />
+
+      <Route path="/help" exact component={ListHelp} isPrivate />
     </Switch>
   );
 }

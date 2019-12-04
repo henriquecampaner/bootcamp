@@ -37,24 +37,7 @@ class HelpOrderController {
   }
 
   async index(req, res) {
-    const { studentId } = req.params;
-    const { page = 1 } = req.query;
-
-    const student = await Student.findOne({
-      where: { id: studentId },
-    });
-
-    if (!student) {
-      return res.status(400).json({ error: 'This user is not a provider' });
-    }
-
-    const helpOrders = await HelpOrder.findAll({
-      where: { student_id: studentId },
-      order: ['created_at'],
-      attributes: ['id', 'question', 'answer', 'answer_at'],
-      limit: 20,
-      offset: (page - 1) * 20,
-    });
+    const helpOrders = await HelpOrder.findAll();
 
     return res.json(helpOrders);
   }

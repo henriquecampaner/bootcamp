@@ -47,8 +47,8 @@ class EnrollmentController {
   async store(req, res) {
     const schema = Yup.object().shape({
       student_id: Yup.number().required(),
-      plan_id: Yup.number().required(),
-      start_date: Yup.date().required(),
+      plan_id: Yup.number(),
+      start_date: Yup.date(),
     });
 
     if (!(await schema.isValid(req.body))) {
@@ -116,7 +116,6 @@ class EnrollmentController {
     const plan = await Plan.findByPk(plan_id);
 
     if (plan) {
-      // Check if admin can edit student_id
       if (student_id !== enrollment.student_id) {
         const studentEnrollmentExists = await Enrollment.findOne({
           where: { student_id },

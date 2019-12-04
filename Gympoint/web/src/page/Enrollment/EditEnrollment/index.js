@@ -48,7 +48,7 @@ export default function EditEnrollment() {
       });
 
       SetselectPlan({
-        value: enrollment.plan.value,
+        value: enrollment.plan.id,
         label: enrollment.plan.title,
         duration: enrollment.plan.duration,
         price: enrollment.plan.price,
