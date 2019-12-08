@@ -1,10 +1,9 @@
+import { Alert } from 'react-native';
 import { all, takeLatest, call, put } from 'redux-saga/effects';
 
-import { toast } from 'react-toastify';
 import { signInSuccess, signFaliure } from './actions';
 
 import api from '~/services/api';
-import history from '~/services/history';
 
 export function* signIn({ payload }) {
   try {
@@ -19,8 +18,8 @@ export function* signIn({ payload }) {
     const { token, user } = response.data;
     // como resposta, recebo o token e o user
 
-    if (!user.provider) {
-      toast.error('Usur is not a provider');
+    if (user.provider) {
+      Alert.alert('Login Error', 'User can not be a provider');
       return;
     }
     // se o usuario nao for um provider, ERRO
@@ -31,10 +30,10 @@ export function* signIn({ payload }) {
     yield put(signInSuccess(token, user));
     // dispatch a funcao com o token e o usuario que era solicitado la nas actions
 
-    history.push('/dashboard');
+    // history.push('/dashboard');
     // apos fazer a validacao, o user e redirecionado para dashboard
   } catch (err) {
-    toast.error('Authentication failed, incorrect email or password');
+    Alert.alert('Authentication failed', 'incorrect email or password');
     yield put(signFaliure());
   }
 }
@@ -47,13 +46,11 @@ export function* signUp({ payload }) {
       name,
       email,
       password,
-      provider: true,
     });
 
-    history.push('/');
+    // history.push('/');
   } catch (err) {
-    toast.error('Registration failed, check your details');
-
+    Alert.alert('Registration failed', 'check your details');
     yield put(signFaliure);
   }
 }
@@ -70,7 +67,7 @@ export function setToken({ payload }) {
 }
 
 export function signOut() {
-  history.push('/');
+  // history.push('/');
 }
 
 export default all([
