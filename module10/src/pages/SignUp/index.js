@@ -50,7 +50,7 @@ export default function SignUp({ navigation }) {
 
           <FormInput
             icon="mail-outline"
-            keyboardType="email-adress"
+            keyboarType="email-address"
             autoCorrect={false}
             autoCapitalize="none"
             placeholder="Type your e-mail"
