@@ -83,37 +83,6 @@ even the mobile one. In Linux however, we use the machine's network IP. Unless y
 emulator, I recomend using the network IP for all configurations if it let's you. You can get by using with using `localhost`, but it'll probably take some tinkering. I didn't test these at all with Mac and iOS.
 
 [Mailing](https://mailtrap.io/) is completely set up; 
-just fill out the DSN and the mailing fields and you're golden.
-
-```
-APP_URL=http://YOU.R00.000.0IP
-NODE_ENV=development
-
-# Auth
-
-APP_SECRET=9d2b2e84e506a7af0fa6e2103366793e
-
-# Database
-
-DB_HOST=localhost
-DB_USER=postgres
-DB_PASS=docker
-DB_NAME=gympoint
-
-
-# Redis
-
-REDIS_HOST=127.0.0.1
-REDIS_PORT=6379
-
-# Mail
-
-MAIL_HOST=
-MAIL_PORT=
-MAIL_USER=
-MAIL_PASS=
-```
-
 We then run the initial yarn and sequelize configuration,
 
 ```
