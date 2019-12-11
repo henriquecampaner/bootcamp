@@ -82,7 +82,7 @@ set-up the reactotron (`~/gympoint_front_end_XXX/src/config/ReactotronConfig.js`
 even the mobile one. In Linux however, we use the machine's network IP. Unless you're running an android 
 emulator, I recomend using the network IP for all configurations if it let's you. You can get by using with using `localhost`, but it'll probably take some tinkering. I didn't test these at all with Mac and iOS.
 
-[Monitoring](https://sentry.io/) and [Mailing](https://mailtrap.io/) are completely set up; 
+[Mailing](https://mailtrap.io/) is completely set up; 
 just fill out the DSN and the mailing fields and you're golden.
 
 ```
