@@ -42,6 +42,23 @@ class HelpOrderController {
     return res.json(helpOrders);
   }
 
+  async show(req, res) {
+    const findStudentById = await Student.findByPk(req.params.studentId);
+
+    if (!findStudentById) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+    const helpOrders = await HelpOrder.findAll({
+      order: [['updated_at', 'DESC']],
+      where: {
+        answer: null,
+        student_id: req.params.studentId,
+      },
+    });
+
+    return res.json(helpOrders);
+  }
+
   async update(req, res) {
     const schema = Yup.object().shape({
       answer: Yup.string(),
