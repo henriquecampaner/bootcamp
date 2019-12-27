@@ -24,20 +24,20 @@ export default function NewHelpOrder({ navigation }) {
   const handleNewCheckin = async () => {
     try {
       setLoading(true);
-      await api.post(`/students/${studentId}/help_orders`, {
+      await api.post(`/students/${studentId}/help-orders`, {
         question,
       });
 
       setQuestion('');
       navigation.goBack();
       Alert.alert(
-        'Pedido de auxílio enviado!',
-        'A nossa equipe atenderá o teu pedido o antes possível.'
+        'Help order sent!',
+        'Our team will answer you as soon as possible..'
       );
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      Alert.alert('Falha no envio!', 'Verifique seus dados.');
+      Alert.alert('Something went wrong', 'Confirm your details.');
     }
   };
 
@@ -46,7 +46,7 @@ export default function NewHelpOrder({ navigation }) {
       <Container>
         <InputContainer>
           <NewOrderInput
-            placeholder="Inclua seu pedido de auxílio"
+            placeholder="Include your request for assistance"
             autoCorrect
             multiline
             returnKeyType="send"
@@ -57,7 +57,7 @@ export default function NewHelpOrder({ navigation }) {
         </InputContainer>
 
         <NewHelpOrderButton onPress={handleNewCheckin} loading={loading}>
-          Enviar pedido
+          Send Help
         </NewHelpOrderButton>
       </Container>
     </Background>

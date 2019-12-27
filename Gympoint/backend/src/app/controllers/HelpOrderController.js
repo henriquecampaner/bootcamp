@@ -51,7 +51,6 @@ class HelpOrderController {
     const helpOrders = await HelpOrder.findAll({
       order: [['updated_at', 'DESC']],
       where: {
-        answer: null,
         student_id: req.params.studentId,
       },
     });
