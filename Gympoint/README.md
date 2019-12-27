@@ -63,7 +63,7 @@ various jobs and databases. Assuming you have
 [Docker installed](https://docs.docker.com/install/), run these:
 
 ```
-docker run --name postgres -e POSTGRES_PASSWORD=91327915 -p 5432:5432 -d -t postgres
+docker run --name postgres -e POSTGRES_PASSWORD=91327915 -p 5432:5434 -d -t postgres
 docker run --name redis -p 6379:6379 -d -t redis:alpine
 ```
 
