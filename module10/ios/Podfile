@@ -37,6 +37,8 @@ target 'module10' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
+  pod 'CodePush', :path => '../node_modules/react-native-code-push'
+
   target 'module10Tests' do
     inherit! :search_paths
     # Pods for testing
