@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { darken } from 'polished'
-import {Link } from 'react-router-dom'
+import { darken } from 'polished';
+import { Link } from 'react-router-dom';
 
 export const ContentHeader = styled.div`
   display: flex;
@@ -28,55 +28,55 @@ export const ContentHeader = styled.div`
 `;
 
 export const AddButton = styled(Link)`
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      background: #ee4d64;
-      color: #fff;
-      border-radius: 4px;
-      margin-right: 20px;
-      border: none;
-      font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #ee4d64;
+  color: #fff;
+  border-radius: 4px;
+  margin-right: 20px;
+  border: none;
+  font-weight: bold;
 
-      &:hover {
-        background: ${darken(0.1, '#ee4d64')};
-      }
+  &:hover {
+    background: ${darken(0.1, '#ee4d64')};
+  }
 
-      svg {
-        margin-right: 10px;
-      }
+  svg {
+    margin-right: 10px;
+  }
 `;
 
 export const BackButton = styled(Link)`
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      background: #cccccc;
-      color: #fff;
-      border-radius: 4px;
-      margin-right: 20px;
-      border: none;
-      font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #cccccc;
+  color: #fff;
+  border-radius: 4px;
+  margin-right: 20px;
+  border: none;
+  font-weight: bold;
 
-      &:hover {
-        background: ${darken(0.1, '#cccccc')};
-      }
-    svg {
-      margin-right: 10px;
-    }
+  &:hover {
+    background: ${darken(0.1, '#cccccc')};
+  }
+  svg {
+    margin-right: 10px;
+  }
 `;
 
 export const SaveButton = styled.button`
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      background: #ee4d64;
-      color: #fff;
-      border-radius: 4px;
-      border: none;
-      font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #ee4d64;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+  font-weight: bold;
 
-    &:hover {
-      background: ${darken(0.1, '#ee4d64')};
-    }
+  &:hover {
+    background: ${darken(0.1, '#ee4d64')};
+  }
 `;

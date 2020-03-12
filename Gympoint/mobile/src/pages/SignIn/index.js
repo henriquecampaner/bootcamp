@@ -29,6 +29,7 @@ export default function SignIn() {
         onSubmitEditing={handleSubmit}
         value={studentId}
         onChangeText={setStudentId}
+        keyboardType="number-pad"
       />
       <SubmitButton loading={loading} onPress={handleSubmit}>
         Log In
